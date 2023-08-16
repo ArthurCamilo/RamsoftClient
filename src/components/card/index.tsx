@@ -7,17 +7,25 @@ import { ICard } from "../../types";
 
 export interface CardProps {
   card: ICard;
-  handleReload: () => void;
+  handleDeleteCard: (cardId: Number) => void;
+  handleUpdateCard: (card: ICard) => void;
 }
 
-export const Card: React.FC<CardProps> = ({ card, handleReload }) => {
+export const Card: React.FC<CardProps> = ({
+  card,
+  handleDeleteCard,
+  handleUpdateCard,
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleClose = (hadAction: Boolean) => {
-    if (hadAction) {
-      handleReload();
-    }
+  const handleDeleteCardAction = () => {
     setIsModalOpen(false);
+    handleDeleteCard(card.id);
+  };
+
+  const handleUpdateCardAction = (updatedCard: ICard) => {
+    setIsModalOpen(false);
+    handleUpdateCard(updatedCard);
   };
 
   return (
@@ -34,7 +42,14 @@ export const Card: React.FC<CardProps> = ({ card, handleReload }) => {
           </MuiCard>
         )}
       </Draggable>
-      {isModalOpen && <CardModal card={card} handleClose={handleClose} />}
+      {isModalOpen && (
+        <CardModal
+          card={card}
+          handleClose={() => setIsModalOpen(false)}
+          handleDeleteCard={handleDeleteCardAction}
+          handleUpdateCard={handleUpdateCardAction}
+        />
+      )}
     </>
   );
 };

@@ -7,35 +7,45 @@ import { ICard } from "../../types";
 export interface CardModalProps {
   card?: ICard;
   isNew?: Boolean;
-  handleClose: (hadAction: Boolean) => void;
+  handleClose: () => void;
+  handleCreateCard?: (card: ICard) => void;
+  handleUpdateCard?: (card: ICard) => void;
+  handleDeleteCard?: (cardId: Number) => void;
 }
 
 export const CardModal: React.FC<CardModalProps> = ({
-  card = { id: 0, name: "", index: 0 },
+  card = { id: 0, name: "", index: 0, columnId: 0 },
   isNew = false,
   handleClose,
+  handleCreateCard = () => {},
+  handleUpdateCard = () => {},
+  handleDeleteCard = () => {},
 }) => {
   const [cardName, setCardName] = useState(card.name);
 
-  const handleSaveCard = async () => {
-    const requestCard: ICard = { ...card, name: cardName };
-
+  const handleSaveCardAction = async () => {
     if (isNew) {
-      await createCard(requestCard);
+      const createdCard = (
+        await createCard({
+          cardName,
+          columnId: card.columnId,
+        })
+      ).data;
+      handleCreateCard(createdCard);
     } else {
-      await updateCard(requestCard);
+      const updatedCard = (await updateCard({ cardId: card.id, cardName }))
+        .data;
+      handleUpdateCard(updatedCard);
     }
-
-    handleClose(true);
   };
 
-  const handleDeleteCard = async () => {
+  const handleDeleteCardAction = async () => {
     await deleteCard(card.id);
-    handleClose(true);
+    handleDeleteCard(card.id);
   };
 
   return (
-    <Modal open onClose={() => handleClose(false)}>
+    <Modal open onClose={() => handleClose()}>
       <ModalContainer>
         <CardId>#{card.id}</CardId>
         <EditInput
@@ -44,11 +54,19 @@ export const CardModal: React.FC<CardModalProps> = ({
         />
         <ButtonSection>
           {!isNew && (
-            <Button variant="outlined" color="error" onClick={handleDeleteCard}>
+            <Button
+              variant="outlined"
+              color="error"
+              onClick={handleDeleteCardAction}
+            >
               Delete
             </Button>
           )}
-          <Button variant="contained" color="success" onClick={handleSaveCard}>
+          <Button
+            variant="contained"
+            color="success"
+            onClick={handleSaveCardAction}
+          >
             Save
           </Button>
         </ButtonSection>

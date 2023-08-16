@@ -8,6 +8,8 @@ export const Container = styled.div`
     margin: 0 10px;
     border-radius: 6px;
     padding: 10px;
+    overflow-y: scroll;
+    position: relative;
 `;
 
 export const Title = styled.label`
@@ -27,4 +29,10 @@ export const AddButton = styled.button`
 `
 
 export const LoadingGauge = styled(CircularProgress)`
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
 `

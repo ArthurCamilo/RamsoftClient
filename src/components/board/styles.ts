@@ -9,4 +9,6 @@ export const BoardContainer  = styled.div`
 `
 
 export const LoadingGauge = styled(CircularProgress)`
+    color: white;
+    margin: 50px auto;
 `
