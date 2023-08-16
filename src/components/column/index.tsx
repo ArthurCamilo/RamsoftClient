@@ -45,6 +45,7 @@ export const Column: React.FC<ColumnProps> = ({
               {column.cards.map((card) => (
                 <Card
                   card={card}
+                  key={card.id}
                   handleDeleteCard={handleDeleteCardAction}
                   handleUpdateCard={handleUpdateCardAction}
                 />
