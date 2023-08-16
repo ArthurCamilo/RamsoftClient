@@ -54,7 +54,7 @@ export const Column: React.FC<ColumnProps> = ({
             </div>
           )}
         </Droppable>
-        <AddButton onClick={() => setIsModalOpen(true)}>Adicionar</AddButton>
+        <AddButton onClick={() => setIsModalOpen(true)}>Add</AddButton>
       </Container>
       {isModalOpen && (
         <CardModal
